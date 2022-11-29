@@ -1,0 +1,111 @@
+﻿@page "/esg/water"
+@using Condom.Services.API.Sabesp
+
+<fieldset class="pt-4">
+    <legend class="fw-bold">Meu Consumo</legend>
+    <hr class="mb-5" />
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title fw-bold">
+                        Média do seu consumo diário no mês:
+                    </div>
+                    <div class="card-subtitle">
+                        145 litros
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title fw-bold">
+                        Seu consumo médio diário anualizado:
+                    </div>
+                    <div class="card-subtitle">
+                        220 litros
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title fw-bold">
+                        Consumo diário recomendado:
+                    </div>
+                    <div class="card-subtitle">
+                        110 litros
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="pt-5 mt-2">
+    <legend class="fw-bold">Reservatórios</legend>
+    <hr class="mb-5"/>
+
+    @if (Data == null)
+    {
+        <p>Consultando os níveis dos reservatórios, aguarde...</p>
+    }
+    else
+    {
+
+        @foreach (var info in Data)
+        {
+            <div class="row pb-3">
+                <div class="col-sm-1 text-center pb-3">
+                    <h5><i class="fas fa-tint text-primary"></i></h5>
+                </div>
+                <div class="col-sm-2 text-center pb-3">
+                    <h5 class="fw-bold">@(info.Name)</h5>
+                </div>
+                <div class="col-sm-3 text-center pb-3">
+                    <label class="fw-bold">Volume armazenado</label>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped @(((double)info.GetInformation("volume armazenado")) < 40 ? "bg-danger" : "" )" role="progressbar" style="@($"width: {info.GetInformation("volume armazenado")}%;")" aria-valuenow="@(info.GetInformation("volume armazenado"))" aria-valuemin="0" aria-valuemax="100">@(info.GetInformation("volume armazenado")) %</div>
+                    </div>
+                </div>
+                <div class="col-sm-2 text-center pb-3">
+                    <label class="fw-bold">Pluviometria do dia:</label>
+                    <p>
+                        @(info.GetInformation("pluviometria do dia"))
+                    </p>
+                </div>
+                <div class="col-sm-2 text-center pb-3">
+                    <label class="fw-bold">Pluviometria acumulada no mês:</label>
+                    <p>
+                        @(info.GetInformation("pluviometria acumulada no mês"))
+                    </p>
+                </div>
+                <div class="col-sm-2 text-center pb-3">
+                    <label class="fw-bold">Média histórica do mês:</label>
+                    <p>
+                        @(info.GetInformation("média histórica do mês"))
+                    </p>
+                </div>
+            </div>
+        }
+    }
+</fieldset>
+
+@code {
+
+    protected List<SabespData> Data { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            Data = new SabespAPI().GetInfo();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+
+}
