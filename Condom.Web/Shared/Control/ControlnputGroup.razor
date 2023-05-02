@@ -1,0 +1,43 @@
+﻿<div class="input-group mb-3">
+    <span class="input-group-text text-secondary bg-light" id="@Id"><i class="fas @Icon"></i></span>
+    <input id="@Id" class="form-control" type="@GetInputType()" placeholder="@PlaceHolder" aria-describedby="@Id" />
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public InputType Type { get; set; }
+
+    [Parameter]
+    public string PlaceHolder { get; set; }
+
+    [Parameter]
+    public string Icon { get; set; }
+
+    protected string GetInputType()
+    {
+        switch (Type)
+        {
+            case InputType.Text:
+                return "text";
+            case InputType.Date:
+                return "date";
+            case InputType.DateTime:
+                return "datetime";
+            case InputType.Int:
+                return "number";
+        }
+
+        return "";
+    }
+
+    public enum InputType
+    {
+        Text,
+        Date,
+        DateTime,
+        Int
+    }
+}

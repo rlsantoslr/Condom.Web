@@ -120,4 +120,134 @@
   <data name="DB" xml:space="preserve">
     <value>Data Source=tcp:condomdbserver.database.windows.net,1433;Initial Catalog=Condom_db;User Id=Condom@condomdbserver;Password=FIAP@2022</value>
   </data>
+  <data name="SabespMock" xml:space="preserve">
+    <value>[
+    {
+        "name": "Cantareira",
+        "data": [
+            {
+                "key": "volume armazenado",
+                "value": "18,9 %"
+            },
+            {
+                "key": "pluviometria do dia",
+                "value": "16,4 mm"
+            },
+            {
+                "key": "pluviometria acumulada no mês",
+                "value": "206,3 mm"
+            },
+            {
+                "key": "média histórica do mês",
+                "value": "178,0 mm"
+            }
+        ]
+    },
+    {
+        "name": "Alto Tietê",
+        "data": [
+            {
+                "key": "volume armazenado",
+                "value": "22,8 %"
+            },
+            {
+                "key": "pluviometria do dia",
+                "value": "7,3 mm"
+            },
+            {
+                "key": "pluviometria acumulada no mês",
+                "value": "186,4 mm"
+            },
+            {
+                "key": "média histórica do mês",
+                "value": "172,4 mm"
+            }
+        ]
+    },
+    {
+        "name": "Guarapiranga",
+        "data": [
+            {
+                "key": "volume armazenado",
+                "value": "85,0 %"
+            },
+            {
+                "key": "pluviometria do dia",
+                "value": "11,2 mm"
+            },
+            {
+                "key": "pluviometria acumulada no mês",
+                "value": "200,6 mm"
+            },
+            {
+                "key": "média histórica do mês",
+                "value": "153,2 mm"
+            }
+        ]
+    },
+    {
+        "name": "Alto Cotia",
+        "data": [
+            {
+                "key": "volume armazenado",
+                "value": "64,6 %"
+            },
+            {
+                "key": "pluviometria do dia",
+                "value": "1,0 mm"
+            },
+            {
+                "key": "pluviometria acumulada no mês",
+                "value": "150,4 mm"
+            },
+            {
+                "key": "média histórica do mês",
+                "value": "149,1 mm"
+            }
+        ]
+    },
+    {
+        "name": "Rio Grande",
+        "data": [
+            {
+                "key": "volume armazenado",
+                "value": "97,3 %"
+            },
+            {
+                "key": "pluviometria do dia",
+                "value": "2,6 mm"
+            },
+            {
+                "key": "pluviometria acumulada no mês",
+                "value": "199,4 mm"
+            },
+            {
+                "key": "média histórica do mês",
+                "value": "186,3 mm"
+            }
+        ]
+    },
+    {
+        "name": "Rio Claro",
+        "data": [
+            {
+                "key": "volume armazenado",
+                "value": "43,9 %"
+            },
+            {
+                "key": "pluviometria do dia",
+                "value": "4,0 mm"
+            },
+            {
+                "key": "pluviometria acumulada no mês",
+                "value": "235,2 mm"
+            },
+            {
+                "key": "média histórica do mês",
+                "value": "245,9 mm"
+            }
+        ]
+    }
+]</value>
+  </data>
 </root>

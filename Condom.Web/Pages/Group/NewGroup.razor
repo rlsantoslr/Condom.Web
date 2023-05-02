@@ -1,0 +1,66 @@
+﻿@page "/group/new"
+@using Condom.Web.Shared.Control
+@inject NavigationManager _Navigation
+<div class="row">
+    <div class="col m-0">
+        <div class="card mx-auto w-100 h-100">
+            <div class="card-body text-center bg-white">
+                @switch (Step)
+                {
+                    case 1:
+                        <h5 class="card-title fw-bold">Primeria etapa</h5>
+                        <p class="card-text">Preencha as informações sobre o grupo que irá criar</p>
+                        <ControlnputGroup Icon="fa-house-user" PlaceHolder="Nome do Grupo, ex: nome do condomínio" Type="ControlnputGroup.InputType.Text" Id="group-info-name" />
+                        <div class="input-group mb-3">
+                            <span class="input-group-text text-secondary bg-light" id="group-info-groupType"><i class="fas fa-hotel"></i></span>
+                            <select id="group-info-groupType" class="form-control" placeholder="Categoria do grupo">
+                                <option>Casas</option>
+                                <option>Apartamentos</option>
+                                <option>Chácaras ou Sítios</option>
+                                <option>Indústrias</option>
+                                <option>Outros</option>
+                            </select>
+                        </div>
+                        <label for="group-info-buildAt" class="fw-bold">Data da Construção</label>
+                        <ControlnputGroup Icon="fa-calendar" PlaceHolder="Data da Construção" Type="ControlnputGroup.InputType.Date" Id="group-info-buildAt" />
+                        <ControlnputGroup Icon="fa-users" PlaceHolder="Qtd. aproximada de pessoas do grupo" Type="ControlnputGroup.InputType.Int" Id="group-info-qtdpeople" />
+
+                        break;
+                    case 2:
+                        <h5 class="card-title fw-bold">Segunda etapa</h5>
+                        break;
+                }
+
+                <div class="row mt-lg-5">
+                    <div class="col">
+                        <a class="btn btn-outline-primary btn-rounded" @onclick="() => ChangeStep(-1)">Voltar</a>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-primary btn-rounded" @onclick="() => ChangeStep(1)">Próximo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    protected int Step { get; set; } = 1;
+
+    protected void ChangeStep(int cStep)
+    {
+        var nStep = Step + cStep;
+
+        if (nStep <= 0)
+        {
+            _Navigation.NavigateTo("/group");
+            Step = 1;
+            return;
+        }
+
+        Step = nStep;
+
+        StateHasChanged();
+    }
+}

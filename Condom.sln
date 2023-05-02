@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Condom.Web", "Condom.Web\Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Services", "2.Services", "{8FE30BFD-A210-44DA-8BF2-E603A83685E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Condom.Services", "Condom.Services\Condom.Services.csproj", "{EDE0EFEC-E827-4794-BE24-C08409B90383}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Condom.Services", "Condom.Services\Condom.Services.csproj", "{EDE0EFEC-E827-4794-BE24-C08409B90383}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Global\CondomResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CondomResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

@@ -4,14 +4,14 @@
 <PageTitle>Condom - Cadastro</PageTitle>
 
 
-<div class="card vw-100 vh-100 index-area-card">
+<div class="card vw-100 vh-100 index-area-card bg-secondary">
     <div class="card-img-top index-area-card-img" />
     <div class="card-body mx-auto pt-5 mt-4 text-center w-100" style="max-width: 600px;">
-        <h2 class="card-title fw-bold">Cadastro</h2>
+        <h1 class="card-title fw-bold text-white pb-5">Cadastro</h1>
         <div class="row">
             <div class="col-lg-12">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="register-name-area"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text text-secondary bg-light" id="register-name-area"><i class="fas fa-user"></i></span>
                     <input id="register-name" class="form-control" type="text" placeholder="Nome completo" aria-describedby="register-name-area" />
                 </div>
             </div>
@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="register-email-area"><i class="fas fa-envelope"></i></span>
+                    <span class="input-group-text text-secondary bg-light" id="register-email-area"><i class="fas fa-envelope"></i></span>
                     <input id="register-email" class="form-control" type="email" placeholder="Digite seu e-mail" aria-describedby="register-email-area" />
                 </div>
             </div>
@@ -28,13 +28,13 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="register-address-state-area"><i class="fas fa-map-location"></i></span>
+                    <span class="input-group-text text-secondary bg-light" id="register-address-state-area"><i class="fas fa-map-location"></i></span>
                     <input id="register-adress-state" class="form-control" type="text" placeholder="Estado" aria-describedby="register-address-state-area" />
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="register-address-city-area"><i class="fas fa-city"></i></span>
+                    <span class="input-group-text text-secondary bg-light" id="register-address-city-area"><i class="fas fa-city"></i></span>
                     <input id="register-adress-city" class="form-control" type="text" placeholder="Cidade" aria-describedby="register-address-city-area" />
                 </div>
             </div>
@@ -42,21 +42,25 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="register-address-area"><i class="fas fa-address-card"></i></span>
+                    <span class="input-group-text text-secondary bg-light" id="register-address-area"><i class="fas fa-address-card"></i></span>
                     <input id="register-adress" class="form-control" type="text" placeholder="Endereço (Rua, Bairro)" aria-describedby="register-address-area" />
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="register-address-number-area"><i class="fas fa-house"></i></span>
+                    <span class="input-group-text text-secondary bg-light" id="register-address-number-area"><i class="fas fa-house"></i></span>
                     <input id="register-adress-number" class="form-control" type="text" placeholder="Número" aria-describedby="register-address-number-area" />
                 </div>
             </div>
         </div>
 
         <div class="row pt-3">
-            <div class="col-lg-12">
-                <a class="btn btn-md btn-yellow" href="/dashboard">Criar conta</a>
+            <div class="col">
+                <a class="btn btn-rounded btn-md btn-secondary btn-white-bd fw-bold" href="/account/login">Retornar</a>
+            </div>
+
+            <div class="col">
+                <a class="btn btn-md btn-dark btn-rounded fw-bold" href="/dashboard">Criar conta</a>
             </div>
         </div>
     </div>

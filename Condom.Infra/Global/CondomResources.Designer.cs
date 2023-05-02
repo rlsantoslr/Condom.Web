@@ -22,7 +22,7 @@ namespace Condom.Infra.Global {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class CondomResources {
+    public class CondomResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Condom.Infra.Global {
         ///   Retorna a instância de ResourceManager armazenada em cache usada por essa classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Condom.Infra.Global.CondomResources", typeof(CondomResources).Assembly);
@@ -51,7 +51,7 @@ namespace Condom.Infra.Global {
         ///   pesquisas de recursos que usam essa classe de recurso de tipo de alta segurança.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,9 +63,37 @@ namespace Condom.Infra.Global {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Data Source=tcp:condomdbserver.database.windows.net,1433;Initial Catalog=Condom_db;User Id=Condom@condomdbserver;Password=FIAP@2022.
         /// </summary>
-        internal static string DB {
+        public static string DB {
             get {
                 return ResourceManager.GetString("DB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a [
+        ///    {
+        ///        &quot;name&quot;: &quot;Cantareira&quot;,
+        ///        &quot;data&quot;: [
+        ///            {
+        ///                &quot;key&quot;: &quot;volume armazenado&quot;,
+        ///                &quot;value&quot;: &quot;18,9 %&quot;
+        ///            },
+        ///            {
+        ///                &quot;key&quot;: &quot;pluviometria do dia&quot;,
+        ///                &quot;value&quot;: &quot;16,4 mm&quot;
+        ///            },
+        ///            {
+        ///                &quot;key&quot;: &quot;pluviometria acumulada no mês&quot;,
+        ///                &quot;value&quot;: &quot;206,3 mm&quot;
+        ///            },
+        ///            {
+        ///                &quot;key&quot;: &quot;média histórica do mês&quot;,
+        ///                &quot;value&quot;: &quot;178,0 mm&quot;
+        /// [o restante da cadeia de caracteres foi truncado]&quot;;.
+        /// </summary>
+        public static string SabespMock {
+            get {
+                return ResourceManager.GetString("SabespMock", resourceCulture);
             }
         }
     }

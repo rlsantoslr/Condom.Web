@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Globalization;
+using Condom.Infra.Global;
 
 namespace Condom.Services.API.Sabesp
 {
@@ -29,7 +30,7 @@ namespace Condom.Services.API.Sabesp
             }
             else
             {
-                return null;
+                return JsonConvert.DeserializeObject<List<SabespData>>(CondomResources.SabespMock);
             }
         }
 

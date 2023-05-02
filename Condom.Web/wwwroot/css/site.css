@@ -3,6 +3,15 @@ html, body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.bg-houses-trans {
+  background: url(/img/houses_bg_transparency.jpg);
+}
+
+.bg-blocks {
+  background-color: #EEEEEE;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='100' y1='33' x2='100' y2='-3'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='100' y1='135' x2='100' y2='97'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='%23c6c6c6' fill-opacity='0.08'%3E%3Crect x='100' width='100' height='100'/%3E%3Crect y='100' width='100' height='100'/%3E%3C/g%3E%3Cg fill-opacity='0.08'%3E%3Cpolygon fill='url(%23a)' points='100 30 0 0 200 0'/%3E%3Cpolygon fill='url(%23b)' points='100 100 0 130 0 100 200 100 200 130'/%3E%3C/g%3E%3C/svg%3E");
+}
+
 h1:focus {
   outline: none;
 }
@@ -11,10 +20,99 @@ a, .btn-link {
   color: #0071c1;
 }
 
+@media screen and (max-width: 800px) {
+  .input-group .input-group-text {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+  }
+}
+@media screen and (min-width: 801px) {
+  .input-group .input-group-text {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+}
+@media screen and (max-width: 800px) {
+  .input-group input {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+  }
+}
+@media screen and (min-width: 801px) {
+  .input-group input {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+@media screen and (min-width: 801px) {
+  .btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+.btn-rounded {
+  border-radius: 50px;
+  width: 100%;
+}
+
+.btn-light {
+  color: #6c757d !important;
+}
+
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #15678b;
+  border-color: #15678b;
+}
+
+.bg-primary {
+  background-color: #15678b !important;
+}
+
+.btn-outline-primary {
+  border-color: #15678b;
+  background-color: transparent !important;
+  color: #15678b;
+}
+.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:focus-visible, .btn-outline-primary:focus-within, .btn-outline-primary:active {
+  color: white;
+  background-color: #15678b !important;
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #30ade5;
+  border-color: #30ade5;
+}
+.btn-secondary.btn-white-bd {
+  border-color: #30ade5;
+  border: 1px solid;
+}
+.btn-secondary.btn-white-bd:hover {
+  background-color: white !important;
+  color: black;
+}
+
+.bg-secondary {
+  background-color: #30ade5 !important;
+}
+
+.text-secondary {
+  color: #30ade5;
 }
 
 .content {
@@ -63,7 +161,7 @@ a, .btn-link {
 }
 
 .index-area-card-img {
-  background-image: url(https://i.pinimg.com/originals/3d/44/0d/3d440d06ebe454d863b1ba94bcb03e52.jpg);
+  background-image: url(/img/houses_bg.jpg);
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
   max-height: 50vh;
@@ -73,7 +171,7 @@ a, .btn-link {
 
 .black-card-body {
   margin-top: -60px !important;
-  background-color: #000000bf;
+  background-color: rgba(0, 0, 0, 0.7490196078);
   border-radius: 10px;
   max-height: 500px;
   color: white;
@@ -100,4 +198,28 @@ a, .btn-link {
 .bg-topnavbar {
   background-color: #ffc107;
   color: black;
+}
+
+header .navbar {
+  padding: 0px;
+}
+header .navbar .container-fluid {
+  height: 100%;
+  background: linear-gradient(150deg, #30ade5 80%, #15678b 20%);
+  padding-left: 20px;
+  padding-top: 5px;
+}
+header .navbar .container-fluid .navbar-brand img {
+  max-height: 100px;
+  max-width: 300px;
+  height: 35px;
+  width: 105px;
+}
+
+.card .card-groups-info {
+  max-height: 150px;
+  min-height: 150px;
+}
+.card .card-groups-img {
+  height: 100%;
 }
