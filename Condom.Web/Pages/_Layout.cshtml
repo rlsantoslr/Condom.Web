@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="Condom.Web.styles.css" rel="stylesheet" />
+    <link href="~/lib/toastr.js/toastr.min.css" rel="stylesheet" />
     <link href="lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
@@ -30,5 +31,21 @@
 
     <script src="_framework/blazor.server.js"></script>
     <script src="lib/font-awesome/js/all.min.js"></script>
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/lib/toastr.js/toastr.min.js"></script>
+    <script type="text/javascript" src="~/js/Condom.js"></script>
+    <script>
+        window.watsonAssistantChatOptions = {
+            integrationID: "738f39b2-b17c-4a22-8f26-6aa2c23a3822", // The ID of this integration.
+            region: "us-south", // The region your integration is hosted in.
+            serviceInstanceID: "19484a6e-06bd-4d6e-bf43-e1b3d4365478", // The ID of your service instance.
+            onLoad: function (instance) { instance.render(); }
+        };
+        setTimeout(function () {
+            const t = document.createElement('script');
+            t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+            document.head.appendChild(t);
+        });
+    </script>
 </body>
 </html>

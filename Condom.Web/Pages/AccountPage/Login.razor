@@ -1,4 +1,7 @@
 ﻿@page "/account/login"
+@attribute [AllowAnonymous()]
+@using Condom.Infra.App;
+@using Condom.Views.Models;
 @layout PublicLayout
 
 <PageTitle>Condom - Acessar</PageTitle>
@@ -12,7 +15,7 @@
             <div class="col-lg-12">
                 <div class="input-group mb-3">
                     <span class="input-group-text text-secondary bg-light" id="login-email-area"><i class="fas fa-envelope"></i></span>
-                    <input id="login-email" class="form-control" type="email" placeholder="Digite seu e-mail" aria-describedby="login-email-area" />
+                    <input id="login-email" class="form-control" type="email" placeholder="Digite seu e-mail" aria-describedby="login-email-area" @bind-value="Model.Domain.Email" />
                 </div>
             </div>
         </div>
@@ -20,7 +23,7 @@
             <div class="col-lg-12">
                 <div class="input-group mb-3">
                     <span class="input-group-text text-secondary bg-light" id="login-password-area"><i class="fas fa-key"></i></span>
-                    <input id="login-password" class="form-control" type="password" placeholder="Digite sua senha" aria-describedby="login-password-area" />
+                    <input id="login-password" class="form-control" type="password" placeholder="Digite sua senha" aria-describedby="login-password-area" @bind-value="Model.Password" />
                 </div>
             </div>
         </div>
@@ -29,7 +32,7 @@
                 <a class="btn btn-rounded btn-md btn-secondary btn-white-bd fw-bold" href="/account/register">Criar nova conta</a>
             </div>
             <div class="col">
-                <a class="btn btn-rounded btn-md btn-dark fw-bold" href="/dashboard">Acessar</a>
+                <a class="btn btn-rounded btn-md btn-dark fw-bold" @onclick="async () => await DoLogin()">Acessar</a>
             </div>
         </div>
 
@@ -41,13 +44,33 @@
             </div>
         </div>
 
-@*        <div class="row">
-            <div class="col-lg-6">
-                <button href="#" class="btn btn-sm btn-default"><i class="text-primary fab fa-facebook"></i> Entrar com o Facebook</button>
-            </div>
-            <div class="col-lg-6">
-                <button href="#" class="btn btn-sm btn-default"><i class="text-danger fab fa-google"></i> Entrar com o Google</button>
-            </div>
+        @*        <div class="row">
+        <div class="col-lg-6">
+        <button href="#" class="btn btn-sm btn-default"><i class="text-primary fab fa-facebook"></i> Entrar com o Facebook</button>
+        </div>
+        <div class="col-lg-6">
+        <button href="#" class="btn btn-sm btn-default"><i class="text-danger fab fa-google"></i> Entrar com o Google</button>
+        </div>
         </div>*@
     </div>
 </div>
+
+@inject IdentityApp _IdentityApp
+@inject NavigationManager _Navigator
+@code {
+    protected UsersView Model { get; set; } = new UsersView();
+
+    public async Task DoLogin()
+    {
+        Model.SetCrud(Domain.Global.CondEnum.CrudEnum.Read);
+
+        Model = await _IdentityApp.OnAction(Model);
+
+        await _JS.ShowTracker(Model.GetTracker());
+
+        if (!Model.HasError())
+        {
+            _Navigator.NavigateTo("/dashboard");
+        }
+    }
+}

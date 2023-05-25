@@ -4,11 +4,11 @@
 <div class="row">
     <div class="col m-0">
         <div class="card mx-auto w-100 h-100">
-            <div class="card-body text-center bg-white">
+            <div class="card-body text-center bg-white px-3">
                 @switch (Step)
                 {
                     case 1:
-                        <h5 class="card-title fw-bold">Primeria etapa</h5>
+                        <h5 class="card-title fw-bold">Dados do Grupo</h5>
                         <p class="card-text">Preencha as informações sobre o grupo que irá criar</p>
                         <ControlnputGroup Icon="fa-house-user" PlaceHolder="Nome do Grupo, ex: nome do condomínio" Type="ControlnputGroup.InputType.Text" Id="group-info-name" />
                         <div class="input-group mb-3">
@@ -21,13 +21,53 @@
                                 <option>Outros</option>
                             </select>
                         </div>
-                        <label for="group-info-buildAt" class="fw-bold">Data da Construção</label>
                         <ControlnputGroup Icon="fa-calendar" PlaceHolder="Data da Construção" Type="ControlnputGroup.InputType.Date" Id="group-info-buildAt" />
                         <ControlnputGroup Icon="fa-users" PlaceHolder="Qtd. aproximada de pessoas do grupo" Type="ControlnputGroup.InputType.Int" Id="group-info-qtdpeople" />
 
                         break;
                     case 2:
-                        <h5 class="card-title fw-bold">Segunda etapa</h5>
+                        <h5 class="card-title fw-bold">Sobre o Grupo</h5>
+                        <hr />
+                        <p class="card-text">A criação de um grupo é um serviço pago da nossa plataforma, com um grupo criado você será capaz de gerenciar uma comunidade independente de sua categoria, veja abaixo a simulação de custo</p>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <strong>Preço fixo mensal pelo custo</strong>
+                                <p>R$ 25,00</p>
+                            </div>
+                            <div class="col-lg-3">
+                                <strong>Preço fixo mensal por usuário no grupo</strong>
+                                <p>R$ 2,50</p>
+                            </div>
+                            <div class="col-lg-3">
+                                <strong>Fórmula do Custo Total</strong>
+                                <p>R$ 25,00 + ( Qtd. Usuários * R$ 2,50 )</p>
+                            </div>
+                            <div class="col-lg-3">
+                                <strong>Custo Total Estimado</strong>
+                                <p>R$ @(GetCostTotal())</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <p><strong>NOTA:</strong> Criando o grupo você será capaz de criar e adminstrar o grupo, logo ferramentas e recursos serão disponibilizados para você, assim como poderá convidar os residentes para utilizar os recursos da plataforma</p>
+                            </div>
+                        </div>
+                        break;
+                    case 3:
+                        <h5 class="card-title fw-bold">Dados de Cobrança</h5>
+                        <small>Insira as informações para que seja possivel realizar a cobrança mensalmente, vale lembra que o primeiro mês será por nossa conta</small>
+                        <ControlnputGroup Id="group-info-bill-name" PlaceHolder="Nome" Type="ControlnputGroup.InputType.Text" Icon="fa-id-card"/>
+                        <ControlnputGroup Id="group-info-bill-surname" PlaceHolder="Sobrenome" Type="ControlnputGroup.InputType.Text" Icon="fa-address-card" />
+                        <ControlnputGroup Id="group-info-bill-address" PlaceHolder="País, Estado, Bairro, Avenida, Rua, Número e Complemento" Type="ControlnputGroup.InputType.Text" Icon="fa-map-location-dot" />
+                        <ControlnputGroup Id="group-info-bill-email" PlaceHolder="E-mail" Type="ControlnputGroup.InputType.Text" Icon="fa-at" />
+                        <ControlnputGroup Id="group-info-bill-tel" PlaceHolder="Telefone fixo ou celular" Type="ControlnputGroup.InputType.Text" Icon="fa-phone" />
+                        <hr />
+                        <strong>Cartão de Crédito</strong>
+                        <br />
+                        <ControlnputGroup Id="group-info-credit-name" PlaceHolder="Nome no Cartão" Type="ControlnputGroup.InputType.Text" Icon="fa-id-card" />
+                        <ControlnputGroup Id="group-info-credit-number" PlaceHolder="Número do Cartão" Type="ControlnputGroup.InputType.Text" Icon="fa-credit-card" />
+                        <ControlnputGroup Id="group-info-credit-expiration" PlaceHolder="Expiração (MM/YY)" Type="ControlnputGroup.InputType.Text" Icon="fa-calendar-check" />
+                        <ControlnputGroup Id="group-info-credit-cvv" PlaceHolder="Código de Segurança (CVV)" Type="ControlnputGroup.InputType.Text" Icon="fa-lock" />
                         break;
                 }
 
@@ -36,7 +76,7 @@
                         <a class="btn btn-outline-primary btn-rounded" @onclick="() => ChangeStep(-1)">Voltar</a>
                     </div>
                     <div class="col">
-                        <a class="btn btn-primary btn-rounded" @onclick="() => ChangeStep(1)">Próximo</a>
+                        <a class="btn btn-secondary btn-rounded" @onclick="() => ChangeStep(1)">Próximo</a>
                     </div>
                 </div>
             </div>
@@ -46,7 +86,14 @@
 
 
 @code {
+    protected int QtdPeople { get; set; }
+
     protected int Step { get; set; } = 1;
+
+    protected string GetCostTotal()
+    {
+        return (25 + (QtdPeople * 2.50)).ToString();
+    }
 
     protected void ChangeStep(int cStep)
     {
@@ -54,7 +101,14 @@
 
         if (nStep <= 0)
         {
-            _Navigation.NavigateTo("/group");
+            _Navigation.NavigateTo("/dashboard");
+            Step = 1;
+            return;
+        }
+
+        if(nStep > 3)
+        {
+            _Navigation.NavigateTo("/dashboard");
             Step = 1;
             return;
         }

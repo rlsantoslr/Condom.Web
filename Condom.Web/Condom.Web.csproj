@@ -12,16 +12,14 @@
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\lib\toastr.js\toastr.js.map" />
+    <None Include="wwwroot\lib\toastr.js\toastr.min.js" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Condom.Domain\Condom.Domain.csproj" />
     <ProjectReference Include="..\Condom.Infra\Condom.Infra.csproj" />
     <ProjectReference Include="..\Condom.Services\Condom.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>

@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Condom.Domain.Global;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using static Condom.Domain.Global.CondEnum;
 
 namespace Condom.Domain.Models
 {
     public class Users : IdentityUser<Guid>, IBaseModel<Users>, IEntity
     {
+
         public Users()
         {
         }
@@ -19,6 +23,11 @@ namespace Condom.Domain.Models
         {
             Overwrite(domain);
         }
+
+        [Validator(new CrudEnum[] { CrudEnum.Read })]
+        [EmailAddress]
+        [Required]
+        public override string Email { get; set; }
 
         public virtual ICollection<UserClaims> Claims { get; set; }
         public virtual ICollection<UserLogins> Logins { get; set; }
@@ -71,6 +80,22 @@ namespace Condom.Domain.Models
         public void Overwrite(Users domain)
         {
             throw new NotImplementedException();
+        }
+        CrudEnum Crud { get; set; }
+        Tracker _Tracker { get; set; } = new Tracker();
+        public CrudEnum GetCrud()
+        {
+            return Crud;
+        }
+
+        public Tracker GetTracker()
+        {
+            return _Tracker;
+        }
+
+        public void SetCrud(CrudEnum crud)
+        {
+            Crud = crud;
         }
     }
 }

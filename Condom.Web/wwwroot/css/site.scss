@@ -97,6 +97,17 @@ a, .btn-link {
     }
 }
 
+.btn-outline-primary {
+    border-color: $secondaryColor;
+    background-color: transparent !important;
+    color: $secondaryColor;
+
+    &:hover, &:focus, &:focus-visible, &:focus-within, &:active {
+        color: white;
+        background-color: $secondaryColor !important;
+    }
+}
+
 .btn-secondary {
     color: #fff;
     background-color: $secondaryColor;
@@ -117,7 +128,7 @@ a, .btn-link {
 }
 
 .text-secondary {
-    color: $secondaryColor;
+    color: $secondaryColor !important;
 }
 
 .content {
