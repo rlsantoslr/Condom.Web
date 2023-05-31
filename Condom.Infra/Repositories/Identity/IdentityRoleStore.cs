@@ -1,4 +1,5 @@
 ﻿using Condom.Domain.Models;
+using Condom.Infra.Context;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,17 @@ using System.Threading.Tasks;
 
 namespace Condom.Infra.Repositories.Identity
 {
-    public interface IIdentityRoleStore<TEntity> : IRoleStore<TEntity> where TEntity : Roles
+    public interface IIdentityRoleStore<TEntity> : IUserSecurityStampStore<TEntity>, IRoleValidator<TEntity>, IRoleStore<TEntity> where TEntity : Roles
     {
 
     }
-    public class IdentityRoleStore : IIdentityRoleStore<Roles>
+    public class IdentityRoleStore : Repository<Users>, IIdentityRoleStore<Roles>
     {
         private bool disposedValue;
+
+        public IdentityRoleStore(CondomContext context) : base(context)
+        {
+        }
 
         public Task<IdentityResult> CreateAsync(Roles role, CancellationToken cancellationToken)
         {
@@ -93,6 +98,46 @@ namespace Condom.Infra.Repositories.Identity
             // Não altere este código. Coloque o código de limpeza no método 'Dispose(bool disposing)'
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        public Task SetSecurityStampAsync(Roles user, string stamp, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetSecurityStampAsync(Roles user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetUserIdAsync(Roles user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetUserNameAsync(Roles user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetUserNameAsync(Roles user, string userName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetNormalizedUserNameAsync(Roles user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetNormalizedUserNameAsync(Roles user, string normalizedName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IdentityResult> ValidateAsync(RoleManager<Roles> manager, Roles role)
+        {
+            throw new NotImplementedException();
         }
     }
 }

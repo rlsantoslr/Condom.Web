@@ -1,0 +1,72 @@
+﻿@page "/account/reset"
+@attribute [AllowAnonymous()]
+@using Condom.Infra.App;
+@using Condom.Views.Models;
+@layout PublicLayout
+
+<PageTitle>Condom - Recuperação de senha</PageTitle>
+
+
+<div class="card vw-100 vh-100 index-area-card bg-secondary">
+    <div class="card-img-top index-area-card-img" />
+    <form id="login-form" class="card-body mx-auto pt-5 mt-4 text-center w-100" style="max-width: 600px;">
+        <h2 class="card-title text-white fw-bold pb-5">Esqueci a minha senha</h2>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-secondary bg-light" id="login-reset-password-area"><i class="fas fa-key"></i></span>
+                    <input id="login-reset-password" class="form-control" type="password" placeholder="Digite sua nova senha" aria-describedby="login-reset-password-area" @bind-value="Model.Password" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-secondary bg-light" id="login-reset-confirmpassword-area"><i class="fas fa-check"></i></span>
+                    <input id="login-reset-confirmpassword" class="form-control" type="password" placeholder="Confirme sua nova senha" aria-describedby="login-reset-confirmpassword-area" @bind-value="Model.ConfirmPassword" />
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col">
+                <a class="btn btn-rounded btn-md btn-secondary btn-white-bd fw-bold" href="/account/login">Voltar</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-rounded btn-md btn-dark fw-bold" @onclick="async () => await OnSave()">Salvar</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@inject IdentityApp _IdentityApp
+@inject NavigationManager _Navigator
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "email")]
+    public string Email { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "token")]
+    public string Token { get; set; }
+
+    protected UsersView Model { get; set; } = new UsersView();
+
+    public async Task OnSave()
+    {
+        await _JS.Spinner(true);
+
+        Model.Email = Email;
+
+        Model.Token = Token;
+
+        var track = await _IdentityApp.ResetPassword(Model);
+
+        await _JS.ShowTracker(track);
+
+        await _JS.Spinner(false);
+
+        if (!track.HasError())
+        {
+            _Navigator.NavigateTo("/account/login");
+        }
+    }
+}

@@ -1,0 +1,35 @@
+﻿@inject AuthenticationStateProvider AuthenticationStateProvider
+@code {
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+    [Parameter]
+    public RouteData Route { get; set; }
+    [Inject]
+    public NavigationManager? Navigation { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        var authenticationState = await AuthenticationStateTask!;
+        var returnUrl = Navigation!.ToBaseRelativePath(Navigation.Uri);
+
+        if (authenticationState?.User?.Identity is null ||  authenticationState.User.Identity.IsAuthenticated == false)
+        {
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                Navigation.NavigateTo("/account/login", true);
+            }
+            else
+            {
+                Navigation.NavigateTo($"/account/login?returnUrl={returnUrl}", true);
+            }
+        }
+        else
+        {
+            //Route.PageType.CustomAttributes.FirstOrDefault(x => x.)
+            //Navigation.NavigateTo(Route., true);
+        }
+    }
+
+}

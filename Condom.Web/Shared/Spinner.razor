@@ -1,0 +1,11 @@
+﻿<div id="main-screen-spinner" style="position:fixed; height: 100vh; width: 100vw; z-index:200; background: #cbc6c6c7; display:none; top: 0; ">
+    <div class="text-center" style="margin-top: 40vh;">
+        <div class="spinner-border" role="status" style="color: #15678b!important;">
+            <span class="sr-only">Processando...</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected string Status { get; set; } = "none";
+}

@@ -1,5 +1,8 @@
 ﻿@page "/dashboard"
-
+@using Condom.Infra.App;
+@using Condom.Infra.Helpers;
+@using Condom.Views.Models;
+@attribute [Authorize]
 <div class="row">
     <div class="col-lg-3 pb-3">
         <div class="card mx-auto w-100 h-100">
@@ -12,28 +15,31 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 pb-3">
-        <div class="card mx-auto w-100 h-100">
-            <div class="card-body text-center card-groups-info bg-secondary" >
-                <h5 class="card-title text-white fw-bold">Perfect Home</h5>
-                <p class="card-text text-white">Condomínio de Prédios</p>
-                <a href="/group" class="btn btn-dark btn-rounded w-50">Acessar</a>
+    @foreach (var group in Data)
+    {
+        <div class="col-lg-3 pb-3">
+            <div class="card mx-auto w-100 h-100">
+                <div class="card-body text-center card-groups-info bg-secondary">
+                    <h5 class="card-title text-white fw-bold">@group.Domain.Name</h5>
+                    <p class="card-text text-white">@(Tools.GetEnumDisplay(group.Domain.Type))</p>
+                    <a href="/group" class="btn btn-dark btn-rounded w-50">Acessar</a>
+                </div>
+                <img src="@group.Domain.ImageURL" class="card-img-top card-groups-img" alt="...">
             </div>
-            <img src="https://www.quintoandar.com.br/img/xxl/893331787-914.3758211358933DSC6429.JPG" class="card-img-top card-groups-img" alt="...">
         </div>
-    </div>
-    <div class="col-lg-3 pb-3">
-        <div class="card mx-auto w-100 h-100">
-            <div class="card-body text-center card-groups-info bg-secondary">
-                <h5 class="card-title text-white fw-bold">Madureira</h5>
-                <p class="card-text text-white">Condomínio de Casas</p>
-                <a href="/group" class="btn btn-dark btn-rounded w-50">Acessar</a>
-            </div>
-            <img src="https://th.bing.com/th/id/OIP.UL7AxocYvWxVJLLo63j_bgHaEm?pid=ImgDet&rs=1" class="card-img-top card-groups-img" alt="...">
-        </div>
-    </div>
+    }
 </div>
-
+@inject GroupsApp _GroupApp
 @code {
+    protected List<GroupsView> Data { get; set; } = new List<GroupsView>();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
 
+        if (firstRender)
+        {
+            Data = await _GroupApp.GetGroups(_Session.GetUserId());
+            await InvokeAsync(StateHasChanged);
+        }
+    }
 }

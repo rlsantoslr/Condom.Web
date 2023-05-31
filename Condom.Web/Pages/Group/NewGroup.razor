@@ -1,32 +1,47 @@
 ﻿@page "/group/new"
+@using Condom.Domain.Models;
+@using Condom.Infra.App;
+@using Condom.Infra.Helpers;
+@using Condom.Views.Models;
 @using Condom.Web.Shared.Control
+@using static Condom.Web.Helpers.ComponentsEnum;
 @inject NavigationManager _Navigation
 <div class="row">
     <div class="col m-0">
-        <div class="card mx-auto w-100 h-100">
+        <div class="card mx-auto w-100 h-100" style="max-width: 750px;">
             <div class="card-body text-center bg-white px-3">
                 @switch (Step)
                 {
                     case 1:
-                        <h5 class="card-title fw-bold">Dados do Grupo</h5>
+                        <h5 class="card-title text-secondary fw-bold">Dados do Grupo</h5>
                         <p class="card-text">Preencha as informações sobre o grupo que irá criar</p>
-                        <ControlnputGroup Icon="fa-house-user" PlaceHolder="Nome do Grupo, ex: nome do condomínio" Type="ControlnputGroup.InputType.Text" Id="group-info-name" />
-                        <div class="input-group mb-3">
-                            <span class="input-group-text text-secondary bg-light" id="group-info-groupType"><i class="fas fa-hotel"></i></span>
-                            <select id="group-info-groupType" class="form-control" placeholder="Categoria do grupo">
-                                <option>Casas</option>
-                                <option>Apartamentos</option>
-                                <option>Chácaras ou Sítios</option>
-                                <option>Indústrias</option>
-                                <option>Outros</option>
-                            </select>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ControlnputGroup Icon="fa-house-user" PlaceHolder="Nome do Grupo, ex: nome do condomínio" Type="ControlInputType.Text" Id="group-info-name" @bind-Value="Model.Domain.Name" />
+                            </div>
+                            <div class="col-lg-6">
+                                <ControlSelectGroup Icon="fa-hotel" Options="Tools.ConvertEnumToDropDown<Groups.TypeEnum>(null)" Placeholder="Categoria do grupo" @bind-Value="Model.Domain.Type"></ControlSelectGroup>
+                            </div>
                         </div>
-                        <ControlnputGroup Icon="fa-calendar" PlaceHolder="Data da Construção" Type="ControlnputGroup.InputType.Date" Id="group-info-buildAt" />
-                        <ControlnputGroup Icon="fa-users" PlaceHolder="Qtd. aproximada de pessoas do grupo" Type="ControlnputGroup.InputType.Int" Id="group-info-qtdpeople" />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ControlnputGroup Icon="fa-calendar" PlaceHolder="Data da Construção" Type="ControlInputType.Date" Id="group-info-buildAt" @bind-Value="Model.Domain.BuildAt" />
+                            </div>
+                            <div class="col-lg-6">
+                                <ControlnputGroup Icon="fa-users" PlaceHolder="Qtd. aproximada de pessoas do grupo" Type="ControlInputType.Int" Id="group-info-qtdpeople" @bind-Value="QtdPeople" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ControlnputGroup Icon="fa-image" PlaceHolder="URL da Imagem ilustrativa para o condomínio" Type="ControlInputType.Text" Id="group-info-image" @bind-Value="Model.Domain.ImageURL" />
+                            </div>
+                        </div>
+
 
                         break;
                     case 2:
-                        <h5 class="card-title fw-bold">Sobre o Grupo</h5>
+                        <h5 class="card-title text-secondary fw-bold">Sobre o Grupo</h5>
                         <hr />
                         <p class="card-text">A criação de um grupo é um serviço pago da nossa plataforma, com um grupo criado você será capaz de gerenciar uma comunidade independente de sua categoria, veja abaixo a simulação de custo</p>
                         <div class="row">
@@ -54,29 +69,59 @@
                         </div>
                         break;
                     case 3:
-                        <h5 class="card-title fw-bold">Dados de Cobrança</h5>
+                        <h5 class="card-title text-secondary fw-bold">Dados de Cobrança</h5>
                         <small>Insira as informações para que seja possivel realizar a cobrança mensalmente, vale lembra que o primeiro mês será por nossa conta</small>
-                        <ControlnputGroup Id="group-info-bill-name" PlaceHolder="Nome" Type="ControlnputGroup.InputType.Text" Icon="fa-id-card"/>
-                        <ControlnputGroup Id="group-info-bill-surname" PlaceHolder="Sobrenome" Type="ControlnputGroup.InputType.Text" Icon="fa-address-card" />
-                        <ControlnputGroup Id="group-info-bill-address" PlaceHolder="País, Estado, Bairro, Avenida, Rua, Número e Complemento" Type="ControlnputGroup.InputType.Text" Icon="fa-map-location-dot" />
-                        <ControlnputGroup Id="group-info-bill-email" PlaceHolder="E-mail" Type="ControlnputGroup.InputType.Text" Icon="fa-at" />
-                        <ControlnputGroup Id="group-info-bill-tel" PlaceHolder="Telefone fixo ou celular" Type="ControlnputGroup.InputType.Text" Icon="fa-phone" />
                         <hr />
-                        <strong>Cartão de Crédito</strong>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ControlnputGroup Id="group-info-bill-name" PlaceHolder="Nome" Type="ControlInputType.Text" Icon="fa-id-card" @bind-Value="Model.GetBillings().Name" />
+                            </div>
+                            <div class="col-lg-6">
+                                <ControlnputGroup Id="group-info-bill-surname" PlaceHolder="Sobrenome" Type="ControlInputType.Text" Icon="fa-address-card" @bind-Value="Model.GetBillings().Surname" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ControlnputGroup Id="group-info-bill-email" PlaceHolder="E-mail" Type="ControlInputType.Text" Icon="fa-at" @bind-Value="Model.GetBillings().Email" />
+                            </div>
+                            <div class="col-lg-6">
+                                <ControlnputGroup Id="group-info-bill-tel" PlaceHolder="Telefone fixo ou celular" Type="ControlInputType.Text" Icon="fa-phone" @bind-Value="Model.GetBillings().PhoneNumber" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ControlnputGroup Id="group-info-bill-address" PlaceHolder="País, Estado, Bairro, Avenida, Rua, Número e Complemento" Type="ControlInputType.Text" Icon="fa-map-location-dot" @bind-Value="Model.GetBillings().FullAddress" />
+                            </div>
+                        </div>
+
+
+                        <hr />
                         <br />
-                        <ControlnputGroup Id="group-info-credit-name" PlaceHolder="Nome no Cartão" Type="ControlnputGroup.InputType.Text" Icon="fa-id-card" />
-                        <ControlnputGroup Id="group-info-credit-number" PlaceHolder="Número do Cartão" Type="ControlnputGroup.InputType.Text" Icon="fa-credit-card" />
-                        <ControlnputGroup Id="group-info-credit-expiration" PlaceHolder="Expiração (MM/YY)" Type="ControlnputGroup.InputType.Text" Icon="fa-calendar-check" />
-                        <ControlnputGroup Id="group-info-credit-cvv" PlaceHolder="Código de Segurança (CVV)" Type="ControlnputGroup.InputType.Text" Icon="fa-lock" />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ControlnputGroup Id="group-info-credit-name" PlaceHolder="Nome no Cartão" Type="ControlInputType.Text" Icon="fa-id-card" @bind-Value="Model.GetBillings().CardName" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <ControlnputGroup Id="group-info-credit-number" PlaceHolder="Número do Cartão" Type="ControlInputType.Text" Icon="fa-credit-card" @bind-Value="Model.GetBillings().CardNumber" />
+                            </div>
+                            <div class="col-lg-4">
+                                <ControlnputGroup Id="group-info-credit-expiration" PlaceHolder="Expiração (MM/YY)" Type="ControlInputType.Text" Icon="fa-calendar-check" @bind-Value="Model.GetBillings().CardExpiration" />
+                            </div>
+                            <div class="col-lg-3">
+                                <ControlnputGroup Id="group-info-credit-cvv" PlaceHolder="Código de Segurança (CVV)" Type="ControlInputType.Text" Icon="fa-lock" @bind-Value="Model.GetBillings().CardSecurity" />
+                            </div>
+                        </div>
                         break;
                 }
 
                 <div class="row mt-lg-5">
                     <div class="col">
-                        <a class="btn btn-outline-primary btn-rounded" @onclick="() => ChangeStep(-1)">Voltar</a>
+                        <a class="btn btn-outline-primary btn-rounded" @onclick="async () => await ChangeStep(-1)">Voltar</a>
                     </div>
                     <div class="col">
-                        <a class="btn btn-secondary btn-rounded" @onclick="() => ChangeStep(1)">Próximo</a>
+                        <a class="btn btn-secondary btn-rounded" @onclick="async () => await ChangeStep(1)">Próximo</a>
                     </div>
                 </div>
             </div>
@@ -84,8 +129,11 @@
     </div>
 </div>
 
-
+@inject GroupsApp _GroupApp
+@inject NavigationManager _Navigator
 @code {
+    protected GroupsView Model { get; set; } = new GroupsView();
+
     protected int QtdPeople { get; set; }
 
     protected int Step { get; set; } = 1;
@@ -95,7 +143,7 @@
         return (25 + (QtdPeople * 2.50)).ToString();
     }
 
-    protected void ChangeStep(int cStep)
+    protected async Task ChangeStep(int cStep)
     {
         var nStep = Step + cStep;
 
@@ -106,15 +154,40 @@
             return;
         }
 
-        if(nStep > 3)
+        if (nStep > 3)
         {
-            _Navigation.NavigateTo("/dashboard");
-            Step = 1;
-            return;
+            if (!await OnSave())
+            {
+                nStep--;
+            }
+            else
+            {
+                return;
+            }
         }
 
         Step = nStep;
 
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected async Task<bool> OnSave()
+    {
+        await _JS.Spinner(true);
+
+        Model.SetCrud(Domain.Global.CondEnum.CrudEnum.Create);
+
+        Model = await _GroupApp.OnAction(Model);
+
+        await _JS.ShowTracker(Model.GetTracker());
+
+        await _JS.Spinner(false);
+
+        if (!Model.HasError())
+        {
+            _Navigator.NavigateTo("/dashboard");
+            return true;
+        }
+        return false;
     }
 }

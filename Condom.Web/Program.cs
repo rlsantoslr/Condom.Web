@@ -4,6 +4,7 @@ using Condom.Web.Data;
 using Condom.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,23 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseEndpoints(options =>
+{
+    options.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+    options.MapRazorPages();
+    options.MapControllers();
+    options.MapBlazorHub(o =>
+    {
+        o.TransportMaxBufferSize = 1000000;
+        o.ApplicationMaxBufferSize = 1000000;
+    });
+    app.MapFallbackToPage("/_Host");
+});
 
 app.Run();

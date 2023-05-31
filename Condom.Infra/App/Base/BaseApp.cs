@@ -28,19 +28,13 @@ namespace Condom.Infra.App.Base
 
             if (ib.GetTracker().HasError()) return view;
 
+            view = await OnAfterValidate(view);
 
-            switch (ib.GetCrud())
-            {
-                case Domain.Global.CondEnum.CrudEnum.Create:
-                    break;
-                case Domain.Global.CondEnum.CrudEnum.Update:
-                    break;
-                case Domain.Global.CondEnum.CrudEnum.Read:
-                    break;
-                case Domain.Global.CondEnum.CrudEnum.Delete:
-                    break;
-            }
+            return view;
+        }
 
+        protected virtual async Task<TView> OnAfterValidate(TView view)
+        {
             return view;
         }
     }

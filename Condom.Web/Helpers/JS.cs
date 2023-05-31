@@ -24,5 +24,10 @@ namespace Condom.Web.Helpers
         {
             await _Runtime.InvokeVoidAsync("showMessage", type.ToString(), message);
         }
+
+        public async Task Spinner(bool enable)
+        {
+            await _Runtime.InvokeVoidAsync("spinner", enable);
+        }
     }
 }

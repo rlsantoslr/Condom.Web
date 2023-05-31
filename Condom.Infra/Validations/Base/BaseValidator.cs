@@ -24,7 +24,7 @@ namespace Condom.Infra.Validations.Base
 
     public abstract class BaseValidator<TView, TDomain> : IBaseValidator<TView, TDomain>
     {
-        readonly UserSession Session;
+        public readonly UserSession Session;
 
         public BaseValidator(UserSession session)
         {
@@ -49,42 +49,86 @@ namespace Condom.Infra.Validations.Base
             CrudEnum crud = baseView.GetCrud();
             var tracker = baseView.GetTracker();
 
+            if(await ValidateSession(crud, view))
+            {
+                if(Session.UserId == Guid.Empty)
+                {
+                    tracker.AddLog(MessageTypeEnum.Error, "Você não está conectado, atualize a sua sessão");
+                    return view;
+                }
+            }
+
             //Validar DOMAIN
-            baseView.GetTracker().Merge(await CheckProperties<TDomain>(ddomain, crud, new Tracker()));
+            baseView.GetTracker().Merge(await CheckProperties<TDomain>(ddomain, crud, new Tracker(), view));
             if (baseView.HasError()) return view;
 
             //Validar VIEW
-            baseView.GetTracker().Merge(await CheckProperties(view, crud, new Tracker()));
+            baseView.GetTracker().Merge(await CheckProperties(view, crud, new Tracker(), view));
             if (baseView.HasError()) return view;
+
+            view = await OnAfterPropertiesValidation(view, crud);
 
             return view;
         }
-        protected async Task<Tracker> CheckProperties<T>(T context, CrudEnum crud, Tracker tracker)
+
+        protected virtual async Task<bool> ValidateSession(CrudEnum crud, TView view)
+        {
+            //Por padrão sempre será verificado se o usuário está autenticado
+            return true;
+        }
+
+
+        public async Task<Tracker> ExternalValidateProperty<T>(T context, string propertyName, CrudEnum crud, TView view)
+        {
+            var tracker = new Tracker();
+            var property = typeof(T).GetProperty(propertyName);
+            if(property == null)
+            {
+                tracker.AddLog(MessageTypeEnum.Error, $"Não foi possivel localizar a propriedade {propertyName}");
+                return tracker;
+            }
+
+            return await ExecutePropertyValidation<T>(context, property, crud, tracker, view);
+        }
+
+        public abstract Task<TView> OnAfterPropertiesValidation(TView view, CrudEnum crud);
+
+
+        protected async Task<Tracker> ExecutePropertyValidation<T>(T context, PropertyInfo property, CrudEnum crud, Tracker tracker, TView view)
+        {
+            var displayName = property.Name;
+            var attr = property.GetCustomAttribute<ValidatorAttribute>();
+            if (attr == null) return tracker;
+
+            if (!attr.Applicability.Contains(crud)) return tracker;
+
+            var displayAttr = property.GetCustomAttribute<DisplayAttribute>();
+            if (displayAttr != null)
+            {
+                displayName = displayAttr.Name;
+            }
+
+            var val = property.GetValue(context);
+
+            if (!CheckAttributes(property, val, displayName, tracker))
+            {
+                return tracker;
+            }
+
+            tracker.Merge(await ValidateProperty(new Tracker(), property, val, view));
+
+            if (tracker.HasError()) return tracker;
+
+            return tracker;
+        }
+
+        protected async Task<Tracker> CheckProperties<T>(T context, CrudEnum crud, Tracker tracker, TView view)
         {
             var properties = typeof(T).GetProperties();
 
             foreach (var property in properties)
             {
-                var displayName = property.Name;
-                var attr = property.GetCustomAttribute<ValidatorAttribute>();
-                if (attr == null) continue;
-
-                if (!attr.Applicability.Contains(crud)) continue;
-
-                var displayAttr = property.GetCustomAttribute<DisplayAttribute>();
-                if (displayAttr != null)
-                {
-                    displayName = displayAttr.Name;
-                }
-
-                var val = property.GetValue(context);
-
-                if (!CheckAttributes(property, val, displayName, tracker))
-                {
-                    return tracker;
-                }
-
-                tracker.Merge(await ValidateProperty(new Tracker(), property, val));
+                tracker = await ExecutePropertyValidation<T>(context, property, crud, tracker, view);
 
                 if (tracker.HasError()) return tracker;
             }
@@ -175,6 +219,6 @@ namespace Condom.Infra.Validations.Base
 
             return true;
         }
-        protected abstract Task<Tracker> ValidateProperty(Tracker tracker, PropertyInfo property, dynamic? value);
+        protected abstract Task<Tracker> ValidateProperty(Tracker tracker, PropertyInfo property, dynamic? value, TView view);
     }
 }

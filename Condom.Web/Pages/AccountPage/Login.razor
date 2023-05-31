@@ -9,13 +9,13 @@
 
 <div class="card vw-100 vh-100 index-area-card bg-secondary">
     <div class="card-img-top index-area-card-img" />
-    <div class="card-body mx-auto pt-5 mt-4 text-center w-100" style="max-width: 600px;">
+    <form id="login-form" class="card-body mx-auto pt-5 mt-4 text-center w-100" style="max-width: 600px;">
         <h2 class="card-title text-white fw-bold pb-5">Entrar na Plataforma</h2>
         <div class="row">
             <div class="col-lg-12">
                 <div class="input-group mb-3">
                     <span class="input-group-text text-secondary bg-light" id="login-email-area"><i class="fas fa-envelope"></i></span>
-                    <input id="login-email" class="form-control" type="email" placeholder="Digite seu e-mail" aria-describedby="login-email-area" @bind-value="Model.Domain.Email" />
+                    <input id="login-email" class="form-control" type="email" placeholder="Digite seu e-mail" aria-describedby="login-email-area" name="Email" />
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="col-lg-12">
                 <div class="input-group mb-3">
                     <span class="input-group-text text-secondary bg-light" id="login-password-area"><i class="fas fa-key"></i></span>
-                    <input id="login-password" class="form-control" type="password" placeholder="Digite sua senha" aria-describedby="login-password-area" @bind-value="Model.Password" />
+                    <input id="login-password" class="form-control" type="password" placeholder="Digite sua senha" aria-describedby="login-password-area" name="Password" />
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                 <a class="btn btn-rounded btn-md btn-secondary btn-white-bd fw-bold" href="/account/register">Criar nova conta</a>
             </div>
             <div class="col">
-                <a class="btn btn-rounded btn-md btn-dark fw-bold" @onclick="async () => await DoLogin()">Acessar</a>
+                <a class="btn btn-rounded btn-md btn-dark fw-bold" onclick="login()">Acessar</a>
             </div>
         </div>
 
@@ -40,7 +40,7 @@
 
         <div class="row pt-3">
             <div class="col-lg-12 text-center">
-                <a href="/account/reset" class="link-light small">Esqueci minha senha</a>
+                <a href="/account/forgotpassword" class="link-light small">Esqueci minha senha</a>
             </div>
         </div>
 
@@ -52,23 +52,39 @@
         <button href="#" class="btn btn-sm btn-default"><i class="text-danger fab fa-google"></i> Entrar com o Google</button>
         </div>
         </div>*@
-    </div>
+    </form>
 </div>
 
 @inject IdentityApp _IdentityApp
 @inject NavigationManager _Navigator
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+
     protected UsersView Model { get; set; } = new UsersView();
 
     public async Task DoLogin()
     {
+        await _JS.Spinner(true);
+
         Model.SetCrud(Domain.Global.CondEnum.CrudEnum.Read);
 
         Model = await _IdentityApp.OnAction(Model);
 
         await _JS.ShowTracker(Model.GetTracker());
 
+        await _JS.Spinner(false);
+
         if (!Model.HasError())
+        {
+            _Navigator.NavigateTo("/dashboard");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateTask!;
+        if (authenticationState?.User?.Identity?.IsAuthenticated == true)
         {
             _Navigator.NavigateTo("/dashboard");
         }

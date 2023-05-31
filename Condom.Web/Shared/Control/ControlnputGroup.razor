@@ -1,6 +1,16 @@
-﻿<div class="input-group mb-3">
-    <span class="input-group-text text-secondary bg-light" id="@Id"><i class="fas @Icon"></i></span>
-    <input id="@Id" class="form-control" type="@GetInputType()" placeholder="@PlaceHolder" aria-describedby="@Id" />
+﻿@using static Condom.Web.Helpers.ComponentsEnum;
+@typeparam TType
+@if (!string.IsNullOrEmpty(PlaceHolder))
+{
+    <div class="row">
+        <div class="col-sm-12 m-0" style="height: 20px;">
+            <p style="font-size: 14px; font-weight: bold; color: #30ade5;">@PlaceHolder</p>
+        </div>
+    </div>
+}
+<div class="input-group input-group-secondary mb-3">
+    <span class="input-group-text" id="@Id"><i class="fas @Icon"></i></span>
+    <input id="@Id" class="form-control" type="@GetInputType()" placeholder="@PlaceHolder" aria-describedby="@Id" @bind-value="Value" />
 </div>
 
 @code {
@@ -8,7 +18,7 @@
     public string Id { get; set; }
 
     [Parameter]
-    public InputType Type { get; set; }
+    public ControlInputType Type { get; set; }
 
     [Parameter]
     public string PlaceHolder { get; set; }
@@ -16,28 +26,57 @@
     [Parameter]
     public string Icon { get; set; }
 
+    [Parameter]
+    public TType Value
+    {
+        get => _Value; set
+        {
+            var refresh = false;
+
+            if(_Value == null && value != null)
+            {
+                _Value = value;
+                refresh = true;;
+            }
+            else if (value == null && _Value == null)
+            {
+                return;
+            }
+
+            if(!_Value.Equals(value) || refresh)
+            {
+                _Value = value;
+                if (ValueChanged.HasDelegate)
+                {
+                    ValueChanged.InvokeAsync(_Value);
+                    StateHasChanged();
+
+                }
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<TType> ValueChanged { get; set; }
+
+    protected TType _Value;
+
     protected string GetInputType()
     {
         switch (Type)
         {
-            case InputType.Text:
+            case ControlInputType.Text:
                 return "text";
-            case InputType.Date:
-                return "date";
-            case InputType.DateTime:
+            case ControlInputType.Date:
                 return "datetime";
-            case InputType.Int:
+            case ControlInputType.DateTime:
+                return "datetime";
+            case ControlInputType.Int:
                 return "number";
         }
 
         return "";
     }
 
-    public enum InputType
-    {
-        Text,
-        Date,
-        DateTime,
-        Int
-    }
+
 }

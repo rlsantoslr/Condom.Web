@@ -1,4 +1,5 @@
 ﻿using Condom.Domain.Models;
+using Condom.Domain.Models.Identity;
 using Condom.Infra.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,9 +13,10 @@ using System.Threading.Tasks;
 
 namespace Condom.Infra.Repositories.Identity
 {
-    public interface IIdentityUserStore<TEntity> : IUserStore<TEntity> where TEntity : Users
+    public interface IIdentityUserStore<TEntity> : IRepository<TEntity>, IUserLoginStore<TEntity>, IUserPasswordStore<TEntity>, IUserEmailStore<TEntity>, IUserRoleStore<TEntity>, IUserStore<TEntity> where TEntity : Users
     {
-
+        Task<Users> FindByEmail(string email, CancellationToken cancellationToken = default(CancellationToken));
+        Task<UserProfiles> GetProfileByUserId(Guid userId);
     }
 
     public class IdentityUserStore : Repository<Users>, IIdentityUserStore<Users>
@@ -23,6 +25,25 @@ namespace Condom.Infra.Repositories.Identity
 
         public IdentityUserStore(CondomContext context) : base(context)
         {
+        }
+
+        public async Task<UserProfiles> GetProfileByUserId(Guid userId)
+        {
+            var rt = new UserProfiles();
+
+            return await Context.UserProfiles.FirstOrDefaultAsync(x => x.UserId == userId);
+        }
+
+        public async Task<Users> FindByEmail(string email, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            if (string.IsNullOrEmpty(email)) return null;
+
+            email = email.ToUpperInvariant().Trim();
+
+            var user = await OwnDbSet.FirstOrDefaultAsync(x => x.NormalizedEmail == email);
+            return user;
         }
 
         public async Task<IdentityResult> CreateAsync(Users user, CancellationToken cancellationToken = default(CancellationToken))
@@ -163,7 +184,112 @@ namespace Condom.Infra.Repositories.Identity
             return;
         }
 
-        Task<string> IUserStore<Users>.GetUserIdAsync(Users user, CancellationToken cancellationToken)
+        async Task<string> IUserStore<Users>.GetUserIdAsync(Users user, CancellationToken cancellationToken)
+        {
+            return user?.Id.ToString() ?? "";
+        }
+
+        public Task SetSecurityStampAsync(Users user, string stamp, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetSecurityStampAsync(Users user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task SetEmailAsync(Users user, string email, CancellationToken cancellationToken)
+        {
+            user.Email = email;
+        }
+
+        public async Task<string> GetEmailAsync(Users user, CancellationToken cancellationToken)
+        {
+            return user.Email;
+        }
+
+        public async Task<bool> GetEmailConfirmedAsync(Users user, CancellationToken cancellationToken)
+        {
+            return user.EmailConfirmed;
+        }
+
+        public async Task SetEmailConfirmedAsync(Users user, bool confirmed, CancellationToken cancellationToken)
+        {
+            user.EmailConfirmed = confirmed;
+        }
+
+        public Task<Users> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<string> GetNormalizedEmailAsync(Users user, CancellationToken cancellationToken)
+        {
+            return user.Email.ToUpperInvariant().Trim();
+        }
+
+        public async Task SetNormalizedEmailAsync(Users user, string normalizedEmail, CancellationToken cancellationToken)
+        {
+            user.NormalizedEmail = normalizedEmail;
+        }
+
+        public Task AddLoginAsync(Users user, UserLoginInfo login, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveLoginAsync(Users user, string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<UserLoginInfo>> GetLoginsAsync(Users user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Users> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task SetPasswordHashAsync(Users user, string passwordHash, CancellationToken cancellationToken)
+        {
+            user.PasswordHash = passwordHash;
+        }
+
+        public async Task<string> GetPasswordHashAsync(Users user, CancellationToken cancellationToken)
+        {
+            return user.PasswordHash;
+        }
+
+        public async Task<bool> HasPasswordAsync(Users user, CancellationToken cancellationToken)
+        {
+            return !string.IsNullOrEmpty(user.PasswordHash);
+        }
+
+        public Task AddToRoleAsync(Users user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFromRoleAsync(Users user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<string>> GetRolesAsync(Users user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsInRoleAsync(Users user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<Users>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

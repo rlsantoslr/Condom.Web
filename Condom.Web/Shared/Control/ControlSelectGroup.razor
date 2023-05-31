@@ -1,0 +1,46 @@
+﻿@using Condom.Infra.Helpers;
+@typeparam TType
+@if (!string.IsNullOrEmpty(Placeholder))
+{
+    <div class="row">
+        <div class="col-sm-12 m-0" style="height: 20px;">
+            <p style="font-size: 14px; font-weight: bold; color: #30ade5;">@Placeholder</p>
+        </div>
+    </div>
+}
+<div class="input-group input-group-secondary mb-3">
+    <span class="input-group-text" id="@Id"><i class="fas @Icon"></i></span>
+    <select id="@Id" class="form-control" placeholder="@Placeholder" @bind="Value">
+        @foreach(var item in Options.Data)
+        {
+            <option value="@item.Key">@item.Value</option>
+        }
+    </select>
+</div>
+@code {
+    [Parameter]
+    public string Placeholder { get; set; }
+    [Parameter]
+    public string Icon { get; set; }
+    [Parameter]
+    public DropDown<TType> Options { get; set; }
+    [Parameter]
+    public EventCallback<TType> ValueChanged { get; set; }
+    [Parameter]
+    public TType Value
+    {
+        get => _Value; set
+        {
+            if (!_Value.Equals(value))
+            {
+                _Value = value;
+                if (ValueChanged.HasDelegate)
+                {
+                    ValueChanged.InvokeAsync(_Value);
+                }
+            }
+        }
+    }
+    protected TType _Value;
+    protected string Id { get; set; } = "S" + Guid.NewGuid().ToString().Replace("-", "");
+}

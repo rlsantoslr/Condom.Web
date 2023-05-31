@@ -24,3 +24,24 @@ function showTracker(track) {
         showMessage(log.type, log.message);
     });
 }
+function spinner(enable) {
+    if (enable) {
+        $("#main-screen-spinner").show();
+    } else {
+        $("#main-screen-spinner").hide();
+    }
+}
+function login() {
+    $.post("identity/login", $("#login-form").serialize(), function (resp) {
+        showTracker(resp);
+
+        if (!resp.hasError)  window.location.href = '/dashboard';
+    });
+}
+function logout() {
+    $.post("identity/logout", function (resp) {
+        showTracker(resp);
+
+        if (!resp.hasError) window.location.href = '/account/login';
+    });
+}

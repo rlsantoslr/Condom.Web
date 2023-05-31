@@ -1,9 +1,11 @@
 ﻿using Condom.Domain.Global;
+using Condom.Domain.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -33,6 +35,8 @@ namespace Condom.Domain.Models
         public virtual ICollection<UserLogins> Logins { get; set; }
         public virtual ICollection<UserToken> Tokens { get; set; }
         public virtual ICollection<UserRoles> UserRoles { get; set; }
+        [NotMapped]
+        public virtual UserProfiles UserProfile { get; set; }
 
         public void CleanReferences()
         {
@@ -45,6 +49,8 @@ namespace Condom.Domain.Models
                 modelBuilder.Entity<Users>(b =>
                 {
                     b.ToTable("Users");
+
+                    b.Ignore(x => x.UserProfile);
 
                     b.Property(c => c.Email)
                         .HasColumnType("varchar(32)")
@@ -79,7 +85,23 @@ namespace Condom.Domain.Models
 
         public void Overwrite(Users domain)
         {
-            throw new NotImplementedException();
+            this.Email = domain.Email;
+            this.LockoutEnd = domain.LockoutEnd;
+            this.LockoutEnabled = domain.LockoutEnabled;
+            this.UserProfile = domain.UserProfile;
+            this.AccessFailedCount = domain.AccessFailedCount;
+            this.ConcurrencyStamp = domain.ConcurrencyStamp;
+            this.EmailConfirmed = domain.EmailConfirmed;
+            this.Id = domain.Id;
+            this.NormalizedEmail = domain.NormalizedEmail;
+            this.NormalizedUserName = domain.NormalizedUserName;
+            this.PasswordHash = domain.PasswordHash;
+            this.PhoneNumber = domain.PhoneNumber;
+            this.PhoneNumberConfirmed = domain.PhoneNumberConfirmed;
+            this.SecurityStamp = domain.SecurityStamp;  
+            this.TwoFactorEnabled  = domain.TwoFactorEnabled;
+            this.UserName = domain.UserName;
+
         }
         CrudEnum Crud { get; set; }
         Tracker _Tracker { get; set; } = new Tracker();

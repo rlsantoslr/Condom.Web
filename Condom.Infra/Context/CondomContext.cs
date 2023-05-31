@@ -1,4 +1,5 @@
 ﻿using Condom.Domain.Models;
+using Condom.Domain.Models.Identity;
 using Condom.Infra.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -21,7 +22,8 @@ namespace Condom.Infra.Context
         public DbSet<UserToken> UserToken { get; set; }
         public DbSet<RoleClaim> RoleClaim { get; set; }
         public override DbSet<Users> Users { get; set; }
-
+        public DbSet<UserProfiles> UserProfiles { get; set; }
+        public DbSet<Groups> Groups { get; set; }
         public CondomContext(DbContextOptions options) : base(options)
         {
         }

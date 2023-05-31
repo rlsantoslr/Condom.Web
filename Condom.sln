@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Condom.Services", "Condom.S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{9708792F-F621-4581-9FEA-0D49FCFB5D76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Condom.Views", "Condom.Views\Condom.Views.csproj", "{30399731-8988-4602-8CD8-AFB98B124E04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Condom.Views", "Condom.Views\Condom.Views.csproj", "{30399731-8988-4602-8CD8-AFB98B124E04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

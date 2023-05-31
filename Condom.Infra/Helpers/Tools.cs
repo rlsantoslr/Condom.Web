@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Condom.Infra.Helpers
 {
@@ -23,6 +26,44 @@ namespace Condom.Infra.Helpers
             }
 
             return rt;
+        }
+
+        public static DropDown<T> ConvertEnumToDropDown<T>(T[] ignore)
+        {
+            var dropDown = new DropDown<T>();
+            var values = Enum.GetValues(typeof(T));
+            foreach(var v in values)
+            {
+                if(ignore != null)
+                {
+                    if(ignore.ToList().Exists(x => x.Equals(v)))
+                    {
+                        continue;
+                    }
+                }
+
+                var display = GetEnumDisplay(v);
+
+                dynamic dv = v;
+
+                dropDown.Data.Add(dv, display);
+            }
+
+            return dropDown;
+
+        }
+
+        public static string GetEnumDisplay<T>(T value)
+        {
+            var display = value.ToString();
+
+            var dAttr = value.GetType()?.GetMember(value.ToString())?.First()?.GetCustomAttribute<DisplayAttribute>();
+            if (dAttr != null)
+            {
+                display = dAttr.GetName();
+            }
+
+            return display;
         }
     }
 }
